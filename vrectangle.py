@@ -32,7 +32,7 @@ class Vrectangle:
         # if input canvas is the root one, we are done
         if canvas is None:
             return reframed
-        # otherwise, we need to reframe wrt to provided canvas
+        # otherwise, we need to reframe wrt provided canvas
         # calculations are easier using reframed Vrectangle and canvas wrt root canvas
         reframed_canvas = canvas._reframe_root()
         top = (reframed.top - reframed_canvas.top) / reframed_canvas.height()
@@ -42,11 +42,11 @@ class Vrectangle:
         return Vrectangle(top, left, bottom, right, canvas)
 
     def _reframe_once(self):
-        # reframe wrt to parent canvas's canvas
+        # reframe wrt parent canvas's canvas
         # if parent canvas is root canvas, we are done
         if self.canvas is None:
             return self
-        # otherwise, compute top, bottom, left, right wrt to parent canvas's canvas
+        # otherwise, compute top, bottom, left, right wrt parent canvas's canvas
         top = self.canvas.top + self.top * self.canvas.height()
         bottom = self.canvas.top + self.bottom * self.canvas.height()
         left = self.canvas.left + self.left * self.canvas.width()
@@ -55,7 +55,7 @@ class Vrectangle:
         return Vrectangle(top, left, bottom, right, canvas)
 
     def _reframe_root(self):
-        # reframe wrt to root canvas
+        # reframe wrt root canvas
         # if parent canvas is root canvas, we are done
         if self.canvas is None:
             return self
