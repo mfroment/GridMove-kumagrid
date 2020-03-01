@@ -1,23 +1,24 @@
 from fractions import Fraction
 
+
 # a Vrectangle is a proportional rectangle defined by its top, left, bottom, right
 # coordinates in a parent canvas (itself a Vrectangle or None if top level (aka root canvas)
 # top, left, bottom, right are handled as Fraction
 class Vrectangle:
-    def __init__(self, top = Fraction(0), left = Fraction(0),
-                 bottom = Fraction(1), right = Fraction(1),
-                 canvas = None):
+    def __init__(self, top=Fraction(0), left=Fraction(0),
+                 bottom=Fraction(1), right=Fraction(1),
+                 canvas=None):
         self.top = self._frac(top)
         self.left = self._frac(left)
         self.bottom = self._frac(bottom)
         self.right = self._frac(right)
         self.canvas = canvas
-        if self.height() <= 0 or self.width() <=0:
+        if self.height() <= 0 or self.width() <= 0:
             raise ValueError("height and width must be strictly positive")
 
     def __str__(self):
         return ("" if self.canvas is None else f"{self.canvas} / ") + \
-            f"[{self.top} {self.left}|{self.bottom} {self.right}]"
+               f"[{self.top} {self.left}|{self.bottom} {self.right}]"
 
     def width(self):
         return self.right - self.left
@@ -25,7 +26,7 @@ class Vrectangle:
     def height(self):
         return self.bottom - self.top
 
-    def reframe(self, canvas = None):
+    def reframe(self, canvas=None):
         # return a Vrectangle reframed in the coordinate scheme of provided canvas
         reframed = self._reframe_root()
         # if input canvas is the root one, we are done
@@ -64,12 +65,12 @@ class Vrectangle:
     def __eq__(self, other):
         if other is None:
             other = Vrectangle(0, 0, 1, 1, None)
-        if not isinstance(other, __class__):
+        if not isinstance(other, Vrectangle):
             return NotImplemented
         reframed = self._reframe_root()
         reframed_other = other._reframe_root()
         return reframed.top == reframed_other.top and reframed.left == reframed_other.left and \
-               reframed.bottom == reframed_other.bottom and reframed.right == reframed_other.right
+            reframed.bottom == reframed_other.bottom and reframed.right == reframed_other.right
 
     @staticmethod
     def _frac(value):

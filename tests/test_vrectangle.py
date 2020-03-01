@@ -2,6 +2,7 @@ import unittest
 from vrectangle import Vrectangle
 from fractions import Fraction as _F
 
+
 class TestVrectangle(unittest.TestCase):
     def setUp(self):
         # theoretically equivalent definitions for 5 vrectangles
@@ -33,6 +34,7 @@ class TestVrectangle(unittest.TestCase):
             for defs2 in self.vrectangles:
                 for def1, def2 in zip(defs1, defs2):
                     self.assertEqual(def1, def2)
+
 
 if __name__ == '__main__':
     unittest.main()

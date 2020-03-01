@@ -10,14 +10,14 @@ def __main__():
     # (hard-coded) inputs:
     outfile = os.path.join("_out_", "kumagrid.grid")
     n_monitors = 2
-    # the target sequences of grid widths/heigths, and their top/left anchor (wrt to monitor 'canvas')
+    # the target sequences of grid widths/heigths, and their top/left anchor (wrt monitor 'canvas')
     intervals = [_F(1, 3), _F(1, 2), _F(2, 3), _F(1, 3), _F(2, 3), _F(1, 2), _F(1, 3)]
     grid_starts = [0, 0, 0, _F(1, 3), _F(1, 3), _F(1, 2), _F(2, 3)]
 
     # ------------
-    # sequence of bottom/right anchors (wrt to monitor 'canvas'
+    # sequence of bottom/right anchors (wrt monitor 'canvas'
     grid_ends = [x + y for x, y in zip(intervals, grid_starts)]
-    # normalized intervals, used for trigger sizing ; and trigger anchors (wrt to trigger canvas)
+    # normalized intervals, used for trigger sizing ; and trigger anchors (wrt trigger canvas)
     ratios = [x / sum(intervals) for x in intervals]
     trigger_ends = list(accumulate(ratios))
     trigger_starts = [0]+trigger_ends[:-1]
@@ -33,19 +33,22 @@ def __main__():
 
     # write to file
     f = open(outfile, "w")
-    [ f.write(line + "\n") for line in grid_rules ]
+    [f.write(line + "\n") for line in grid_rules]
     f.close()
-
 
 
 def get_trigger_canvases(margin, intervals):
     base_canvas = Vrectangle(margin, margin, 1-margin, 1-margin)
 
-    spans = { 'vector': max(intervals), 'cells': sum(intervals), 'inner_margin': min(intervals)*_F(2,3) }
+    spans = {
+        'vector': max(intervals),
+        'cells': sum(intervals),
+        'inner_margin': min(intervals) * _F(2, 3)
+    }
     # area is split in vector/inner_margin/cells/(ghost)inner_margin/(ghost)vector
     # (ghost spans serve to center the cells)
-    area_span = spans['vector']*2 + spans['cells'] + spans['inner_margin']*2
-    spans = { k: v / area_span for k, v in spans.items() } # normalize
+    area_span = spans['vector'] * 2 + spans['cells'] + spans['inner_margin'] * 2
+    spans = {k: v / area_span for k, v in spans.items()}
     # anchors for sections:
     anchors = [
         0,
@@ -99,29 +102,29 @@ def get_grid_trigger_def_section(grid_tops, grid_lefts, grid_bottoms, grid_right
     return res
 
 
-def get_grid_trigger_rule(index, grid_trigger_def, monitor = 1):
+def get_grid_trigger_rule(index, grid_trigger_def, monitor=1):
     reframed_grid = grid_trigger_def['grid'].reframe()
     reframed_trigger = grid_trigger_def['trigger'].reframe()
     res = [
         f"[{index}]",
         "",
         f"  TriggerTop    = [MonitorReal{monitor}Top]" +
-            ("" if reframed_trigger.top == 0 else f"    + [MonitorReal{monitor}Height] * {reframed_trigger.top}"),
+        ("" if reframed_trigger.top == 0 else f"    + [MonitorReal{monitor}Height] * {reframed_trigger.top}"),
         f"  TriggerLeft   = [MonitorReal{monitor}Left]" +
-            ("" if reframed_trigger.left == 0 else f"   + [MonitorReal{monitor}Width] * {reframed_trigger.left}"),
+        ("" if reframed_trigger.left == 0 else f"   + [MonitorReal{monitor}Width] * {reframed_trigger.left}"),
         f"  TriggerBottom = [MonitorReal{monitor}Bottom]" +
-            ("" if reframed_trigger.bottom == 1 else f" - [MonitorReal{monitor}Height] * {1-reframed_trigger.bottom}"),
+        ("" if reframed_trigger.bottom == 1 else f" - [MonitorReal{monitor}Height] * {1-reframed_trigger.bottom}"),
         f"  TriggerRight  = [MonitorReal{monitor}Right]" +
-            ("" if reframed_trigger.right == 1 else f"  - [MonitorReal{monitor}Width] * {1 - reframed_trigger.right}"),
+        ("" if reframed_trigger.right == 1 else f"  - [MonitorReal{monitor}Width] * {1-reframed_trigger.right}"),
         "",
         f"  GridTop       = [Monitor{monitor}Top]" +
-            ("" if reframed_grid.top == 0 else f"        + [Monitor{monitor}Height] * {reframed_grid.top}"),
+        ("" if reframed_grid.top == 0 else f"        + [Monitor{monitor}Height] * {reframed_grid.top}"),
         f"  GridLeft      = [Monitor{monitor}Left]" +
-            ("" if reframed_grid.left == 0 else f"       + [Monitor{monitor}Width] * {reframed_grid.left}"),
+        ("" if reframed_grid.left == 0 else f"       + [Monitor{monitor}Width] * {reframed_grid.left}"),
         f"  GridBottom    = [Monitor{monitor}Bottom]" +
-            ("" if reframed_grid.bottom == 1 else f"     - [Monitor{monitor}Height] * {1-reframed_grid.bottom}"),
+        ("" if reframed_grid.bottom == 1 else f"     - [Monitor{monitor}Height] * {1-reframed_grid.bottom}"),
         f"  GridRight     = [Monitor{monitor}Right]" +
-            ("" if reframed_grid.right == 1 else f"      - [Monitor{monitor}Width] * {1 - reframed_grid.right}"),
+        ("" if reframed_grid.right == 1 else f"      - [Monitor{monitor}Width] * {1-reframed_grid.right}"),
         ""
     ]
     return res
@@ -154,7 +157,6 @@ def get_grid_rules(grid_trigger_defs, n_monitors):
     #     ""
     # ]
     return res
-
 
 
 if __name__ == "__main__":
