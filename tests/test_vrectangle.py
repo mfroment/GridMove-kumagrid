@@ -1,31 +1,30 @@
 import unittest
 from vrectangle import Vrectangle
-from fractions import Fraction
+from fractions import Fraction as _F
 
 class TestVrectangle(unittest.TestCase):
     def setUp(self):
-        xth = lambda x: Fraction(1, x)
         # theoretically equivalent definitions for 5 vrectangles
         def1 = [
-            Vrectangle(xth(6), xth(5), 4 * xth(6), 4 * xth(5), None),
-            Vrectangle(xth(6), xth(5), 4 * xth(6), 2 * xth(5), None),
-            Vrectangle(xth(6), 2 * xth(5), 3 * xth(6), 4 * xth(5), None),
-            Vrectangle(3 * xth(6), 2 * xth(5), 4 * xth(6), 4 * xth(5), None),
-            Vrectangle(0, 3 * xth(5), 2 * xth(6), 1, None)
+            Vrectangle(_F(1, 6), _F(1, 5), _F(4, 6), _F(4, 5), None),
+            Vrectangle(_F(1, 6), _F(1, 5), _F(4, 6), _F(2, 5), None),
+            Vrectangle(_F(1, 6), _F(2, 5), _F(3, 6), _F(4, 5), None),
+            Vrectangle(_F(3, 6), _F(2, 5), _F(4, 6), _F(4, 5), None),
+            Vrectangle(0, _F(3, 5), _F(2, 6), 1, None)
         ]
         def2 = [
             Vrectangle(0, 0, 1, 1, def1[0]),
-            Vrectangle(0, 0, 1, xth(3), def1[0]),
-            Vrectangle(0, xth(3), 2 * xth(3), 1, def1[0]),
-            Vrectangle(2 * xth(3), xth(3), 1, 1, def1[0]),
-            Vrectangle(-xth(3), 2 * xth(3), xth(3), 4 * xth(3), def1[0])
+            Vrectangle(0, 0, 1, _F(1, 3), def1[0]),
+            Vrectangle(0, _F(1, 3), _F(2, 3), 1, def1[0]),
+            Vrectangle(_F(2, 3), _F(1, 3), 1, 1, def1[0]),
+            Vrectangle(-_F(1, 3), _F(2, 3), _F(1, 3), _F(4, 3), def1[0])
         ]
         def3 = [
-            Vrectangle(0, -xth(2), 3 * xth(2), 1, def1[2]),
-            Vrectangle(0, -xth(2), 3 * xth(2), 0, def1[2]),
+            Vrectangle(0, -_F(1, 2), _F(3, 2), 1, def1[2]),
+            Vrectangle(0, -_F(1, 2), _F(3, 2), 0, def1[2]),
             Vrectangle(0, 0, 1, 1, def1[2]),
-            Vrectangle(1, 0, 3 * xth(2), 1, def1[2]),
-            Vrectangle(-xth(2), xth(2), xth(2), 3 * xth(2), def1[2])
+            Vrectangle(1, 0, _F(3, 2), 1, def1[2]),
+            Vrectangle(-_F(1, 2), _F(1, 2), _F(1, 2), _F(3, 2), def1[2])
         ]
         self.vrectangles = [def1, def2, def3]
 
