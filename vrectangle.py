@@ -1,8 +1,8 @@
 from fractions import Fraction
 
 
-# a Vrectangle is a proportional rectangle defined by its top, left, bottom, right
-# coordinates in a parent canvas (itself a Vrectangle or None if top level (aka root canvas)
+# a Vrectangle is a rectangle defined by its top, left, bottom, right coordinates as
+# proportions of height & width of a parent canvas (itself a Vrectangle or None if top-level aka root canvas)
 # top, left, bottom, right are handled as Fraction
 class Vrectangle:
     def __init__(self, top=Fraction(0), left=Fraction(0),
